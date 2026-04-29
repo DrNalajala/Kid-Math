@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧮 Math Quest - Fun Math for Kids!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f0f4ff;
+            --card: #ffffff;
+            --primary: #6c5ce7;
+            --secondary: #fd79a8;
+            --accent: #ffd32a;
+            --green: #00cec9;
+            --orange: #fdcb6e;
+            --red: #ff7675;
+            --blue: #74b9ff;
+            --purple: #a29bfe;
+            --text: #2d3436;
+            --shadow: 0 8px 32px rgba(108, 92, 231, 0.12);
+            --shadow-lg: 0 16px 48px rgba(108, 92, 231, 0.18);
+            --radius: 24px;
+            --radius-sm: 16px;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #e8ecff 0%, #f0e6ff 25%, #ffe8f0 50%, #e8f8ff 75%, #fff8e8 100%);
+            background-size: 400% 400%;
+            animation: bgShift 20s ease infinite;
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        @keyframes bgShift {
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+            25% {
+                background-position: 100% 0%;
+            }
+            50% {
+                background-position: 100% 100%;
+            }
+            75% {
+                background-position: 0% 100%;
+            }
+        }
+
+        /* Floating background symbols */
+        .bg-symbols {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .bg-symbol {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.10;
+            animation: floatUp linear infinite;
+            font-weight: 900;
+        }
+        @keyframes floatUp {
+            0% {
+                transform: translateY(110vh) rotate(0deg) scale(0.5);
+                opacity: 0.04;
+            }
+            10% {
+                opacity: 0.14;
+            }
+            90% {
+                opacity: 0.10;
+            }
+            100% {
+                transform: translateY(-15vh) rotate(360deg) scale(1.3);
+                opacity: 0.01;
+            }
+        }
+
+        /* Main container */
+        .container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 480px;
+            background: var(--card);
+            border-radius: 32px;
+            padding: 24px 20px 28px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            animation: slideUp 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+            border: 3px solid #e8e8ff;
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .logo .icon {
+            font-size: 2rem;
+            animation: bounceIcon 1.5s ease-in-out infinite;
+        }
+        @keyframes bounceIcon {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-14px);
+            }
+            50% {
+                transform: translateY(0);
+            }
+            70% {
+                transform: translateY(-7px);
+            }
+            85% {
+                transform: translateY(0);
+            }
+        }
+        .stats-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .stat-badge {
+            background: #f8f7ff;
+            border-radius: 20px;
+            padding: 8px 14px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+        .stat-badge.stars-badge {
+            background: #fffbe6;
+            color: #e17055;
+        }
+        .stat-badge.streak-badge {
+            background: #ffe8ec;
+            color: #d63031;
+        }
+        .stat-badge .emoji {
+            font-size: 1.2rem;
+        }
+
+        /* Mascot area */
+        .mascot-area {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 70px;
+        }
+        .mascot {
+            font-size: 3.5rem;
+            transition: var(--transition);
+            animation: mascotIdle 2s ease-in-out infinite;
+        }
+        .mascot.thinking {
+            animation: mascotThink 0.6s ease-in-out;
+        }
+        .mascot.happy {
+            animation: mascotHappy 0.5s ease-out;
+        }
+        .mascot.encourage {
+            animation: mascotEncourage 0.5s ease-out;
+        }
+        @keyframes mascotIdle {
+            0%,
+            100% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-6px) scale(1.04);
+            }
+        }
+        @keyframes mascotThink {
+            0%,
+            100% {
+                transform: rotate(0);
+            }
+            25% {
+                transform: rotate(-12deg);
+            }
+            75% {
+                transform: rotate(12deg);
+            }
+        }
+        @keyframes mascotHappy {
+            0% {
+                transform: scale(1);
+            }
+            40% {
+                transform: scale(1.35);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        @keyframes mascotEncourage {
+            0% {
+                transform: translateX(0);
+            }
+            20% {
+                transform: translateX(-8px);
+            }
+            40% {
+                transform: translateX(8px);
+            }
+            60% {
+                transform: translateX(-5px);
+            }
+            80% {
+                transform: translateX(5px);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+        .speech-bubble {
+            background: #fff;
+            border-radius: 20px 20px 20px 6px;
+            padding: 10px 16px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            max-width: 200px;
+            text-align: center;
+            transition: var(--transition);
+            animation: popIn 0.3s ease-out;
+        }
+        @keyframes popIn {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Problem display */
+        .problem-area {
+            background: linear-gradient(135deg, #f8f7ff, #fef8ff);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            box-shadow: inset 0 2px 8px rgba(108, 92, 231, 0.06);
+            border: 2px dashed #e0d8f8;
+            position: relative;
+            overflow: hidden;
+        }
+        .problem-label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #a29bfe;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 4px;
+        }
+        .problem-equation {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--text);
+            letter-spacing: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .problem-equation .number {
+            color: var(--primary);
+        }
+        .problem-equation .operator-symbol {
+            color: var(--secondary);
+            font-size: 2.5rem;
+        }
+        .problem-equation .question-mark {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ffd32a, #ffa502);
+            border-radius: 16px;
+            color: #fff;
+            font-size: 2.2rem;
+            font-weight: 900;
+            line-height: 60px;
+            animation: questionPulse 1.2s ease-in-out infinite;
+            box-shadow: 0 6px 20px rgba(255, 165, 2, 0.35);
+        }
+        @keyframes questionPulse {
+            0%,
+            100% {
+                transform: scale(1);
+                box-shadow: 0 6px 20px rgba(255, 165, 2, 0.35);
+            }
+            50% {
+                transform: scale(1.08);
+                box-shadow: 0 10px 30px rgba(255, 165, 2, 0.5);
+            }
+        }
+
+        /* Answer buttons */
+        .answers-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .answer-btn {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            padding: 18px 12px;
+            border-radius: var(--radius-sm);
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            color: #fff;
+            letter-spacing: 1px;
+            min-height: 60px;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
+        }
+        .answer-btn:active {
+            transform: scale(0.94);
+        }
+        .answer-btn:nth-child(1) {
+            background: linear-gradient(135deg, #ff7675, #e17055);
+            box-shadow: 0 6px 18px rgba(255, 118, 117, 0.3);
+        }
+        .answer-btn:nth-child(2) {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            box-shadow: 0 6px 18px rgba(116, 185, 255, 0.3);
+        }
+        .answer-btn:nth-child(3) {
+            background: linear-gradient(135deg, #00cec9, #00b894);
+            box-shadow: 0 6px 18px rgba(0, 206, 201, 0.3);
+        }
+        .answer-btn:nth-child(4) {
+            background: linear-gradient(135deg, #fd79a8, #e84393);
+            box-shadow: 0 6px 18px rgba(253, 121, 168, 0.3);
+        }
+        .answer-btn.correct-flash {
+            animation: correctFlash 0.6s ease-out;
+            border-color: #fff !important;
+            box-shadow: 0 0 0 12px rgba(0, 206, 201, 0.25) !important;
+        }
+        @keyframes correctFlash {
+            0% {
+                transform: scale(1);
+                filter: brightness(1);
+            }
+            35% {
+                transform: scale(1.10);
+                filter: brightness(1.6);
+            }
+            100% {
+                transform: scale(1);
+                filter: brightness(1);
+            }
+        }
+        .answer-btn.wrong-shake {
+            animation: wrongShake 0.5s ease-out;
+            border-color: #ff4444 !important;
+            filter: brightness(0.7);
+        }
+        @keyframes wrongShake {
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+            15% {
+                transform: translateX(-10px);
+            }
+            30% {
+                transform: translateX(10px);
+            }
+            45% {
+                transform: translateX(-8px);
+            }
+            60% {
+                transform: translateX(6px);
+            }
+            75% {
+                transform: translateX(-3px);
+            }
+            90% {
+                transform: translateX(2px);
+            }
+        }
+        .answer-btn:disabled {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        /* Operation tabs */
+        .ops-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .op-tab {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 10px 16px;
+            border-radius: 20px;
+            border: 2px solid #e0d8f8;
+            background: #fff;
+            cursor: pointer;
+            transition: var(--transition);
+            color: #636e72;
+            white-space: nowrap;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
+        }
+        .op-tab.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+            box-shadow: 0 4px 16px rgba(108, 92, 231, 0.3);
+            transform: translateY(-2px);
+        }
+        .op-tab:hover:not(.active) {
+            background: #f8f7ff;
+            border-color: #c8c0f0;
+        }
+
+        /* Bottom controls */
+        .bottom-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+        }
+        .ctrl-btn {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 8px 14px;
+            border-radius: 20px;
+            border: 2px solid #e0d8f8;
+            background: #fff;
+            cursor: pointer;
+            transition: var(--transition);
+            color: #636e72;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
+        }
+        .ctrl-btn:hover {
+            background: #f8f7ff;
+        }
+        .ctrl-btn.active-ctrl {
+            background: #ffd32a;
+            border-color: #ffd32a;
+            color: #2d3436;
+            font-weight: 800;
+        }
+        .difficulty-select {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 8px 12px;
+            border-radius: 20px;
+            border: 2px solid #e0d8f8;
+            background: #fff;
+            cursor: pointer;
+            color: #636e72;
+            outline: none;
+            transition: var(--transition);
+            touch-action: manipulation;
+        }
+        .difficulty-select:focus {
+            border-color: var(--primary);
+        }
+
+        /* Confetti container */
+        .confetti-container {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 999;
+        }
+        .confetti-piece {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 4px;
+            animation: confettiFall 0.9s ease-out forwards;
+        }
+        @keyframes confettiFall {
+            0% {
+                transform: translate(0, 0) rotate(0deg) scale(1);
+                opacity: 1;
+            }
+            70% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--dx), var(--dy)) rotate(var(--rot)) scale(0.2);
+                opacity: 0;
+            }
+        }
+
+        /* Celebration overlay */
+        .celebration-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 998;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.2s ease-out;
+            pointer-events: all;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        .celebration-card {
+            background: #fff;
+            border-radius: 28px;
+            padding: 30px 24px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: popUp 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            max-width: 340px;
+            width: 90%;
+        }
+        @keyframes popUp {
+            from {
+                transform: scale(0.6);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        .celebration-card .big-emoji {
+            font-size: 5rem;
+            animation: mascotHappy 0.6s ease-out;
+        }
+        .celebration-card h2 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin: 8px 0;
+        }
+        .celebration-card p {
+            color: #636e72;
+            font-weight: 600;
+        }
+        .celebration-card button {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 1.1rem;
+            padding: 12px 30px;
+            border-radius: 24px;
+            border: none;
+            background: var(--accent);
+            color: #2d3436;
+            cursor: pointer;
+            margin-top: 16px;
+            box-shadow: 0 6px 20px rgba(255, 211, 42, 0.4);
+            transition: var(--transition);
+            touch-action: manipulation;
+        }
+        .celebration-card button:active {
+            transform: scale(0.94);
+        }
+
+        /* Star burst */
+        .star-burst {
+            position: absolute;
+            font-size: 1.4rem;
+            pointer-events: none;
+            animation: starUp 0.7s ease-out forwards;
+            z-index: 10;
+        }
+        @keyframes starUp {
+            0% {
+                transform: translateY(0) scale(0.3);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-80px) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 400px) {
+            .container {
+                padding: 16px 12px 20px;
+                border-radius: 24px;
+                gap: 12px;
+            }
+            .problem-equation {
+                font-size: 2.2rem;
+                gap: 4px;
+            }
+            .problem-equation .question-mark {
+                width: 48px;
+                height: 48px;
+                line-height: 48px;
+                font-size: 1.6rem;
+                border-radius: 12px;
+            }
+            .answer-btn {
+                font-size: 1.2rem;
+                padding: 14px 8px;
+                border-radius: 12px;
+                min-height: 50px;
+            }
+            .answers-grid {
+                gap: 8px;
+            }
+            .op-tab {
+                font-size: 0.78rem;
+                padding: 8px 11px;
+            }
+            .stat-badge {
+                font-size: 0.75rem;
+                padding: 6px 10px;
+            }
+            .logo {
+                font-size: 1.3rem;
+            }
+            .mascot {
+                font-size: 2.8rem;
+            }
+        }
+        @media (min-width: 768px) {
+            .container {
+                padding: 32px 28px 36px;
+            }
+            .answer-btn {
+                font-size: 1.7rem;
+                padding: 20px 16px;
+                min-height: 70px;
+            }
+            .problem-equation {
+                font-size: 3.5rem;
+            }
+            .problem-equation .question-mark {
+                width: 70px;
+                height: 70px;
+                line-height: 70px;
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Floating background symbols -->
+    <div class="bg-symbols" id="bgSymbols"></div>
+
+    <!-- Confetti container -->
+    <div class="confetti-container" id="confettiContainer"></div>
+
+    <!-- Celebration overlay (hidden by default) -->
+    <div id="celebrationOverlay" style="display:none;"></div>
+
+    <!-- Main app container -->
+    <div class="container" id="mainContainer">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <span class="icon">🧮</span> Math Quest
+            </div>
+            <div class="stats-row">
+                <div class="stat-badge stars-badge">
+                    <span class="emoji">⭐</span> <span id="starCount">0</span>
+                </div>
+                <div class="stat-badge streak-badge">
+                    <span class="emoji">🔥</span> <span id="streakCount">0</span>
+                </div>
+                <div class="stat-badge">
+                    <span class="emoji">✅</span> <span id="scoreCount">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mascot -->
+        <div class="mascot-area">
+            <span class="mascot" id="mascotEmoji">🦉</span>
+            <div class="speech-bubble" id="speechBubble">Let's solve this! ✨</div>
+        </div>
+
+        <!-- Problem -->
+        <div class="problem-area" id="problemArea">
+            <div class="problem-label" id="problemLabel">ADDITION</div>
+            <div class="problem-equation" id="problemEquation">
+                <span class="number" id="num1">7</span>
+                <span class="operator-symbol" id="opSymbol">+</span>
+                <span class="number" id="num2">5</span>
+                <span class="operator-symbol">=</span>
+                <span class="question-mark">?</span>
+            </div>
+        </div>
+
+        <!-- Answer buttons -->
+        <div class="answers-grid" id="answersGrid">
+            <button class="answer-btn" data-index="0">12</button>
+            <button class="answer-btn" data-index="1">10</button>
+            <button class="answer-btn" data-index="2">14</button>
+            <button class="answer-btn" data-index="3">11</button>
+        </div>
+
+        <!-- Operation tabs -->
+        <div class="ops-tabs" id="opsTabs">
+            <button class="op-tab active" data-op="add">➕ Addition</button>
+            <button class="op-tab" data-op="sub">➖ Subtraction</button>
+            <button class="op-tab" data-op="mul">✖️ Multiplication</button>
+            <button class="op-tab" data-op="div">➗ Division</button>
+        </div>
+
+        <!-- Bottom controls -->
+        <div class="bottom-row">
+            <select class="difficulty-select" id="difficultySelect">
+                <option value="easy">🌟 Easy</option>
+                <option value="medium" selected>⚡ Medium</option>
+                <option value="hard">🔥 Hard</option>
+            </select>
+            <button class="ctrl-btn" id="soundToggle" title="Toggle Sound">
+                🔊 Sound
+            </button>
+            <button class="ctrl-btn" id="newProblemBtn" title="New Problem">
+                🔄 New
+            </button>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ─────────────────────────────────────
+            // DOM ELEMENTS
+            // ─────────────────────────────────────
+            const num1El = document.getElementById('num1');
+            const num2El = document.getElementById('num2');
+            const opSymbolEl = document.getElementById('opSymbol');
+            const problemLabel = document.getElementById('problemLabel');
+            const answersGrid = document.getElementById('answersGrid');
+            const answerBtns = answersGrid.querySelectorAll('.answer-btn');
+            const mascotEmoji = document.getElementById('mascotEmoji');
+            const speechBubble = document.getElementById('speechBubble');
+            const starCountEl = document.getElementById('starCount');
+            const streakCountEl = document.getElementById('streakCount');
+            const scoreCountEl = document.getElementById('scoreCount');
+            const confettiContainer = document.getElementById('confettiContainer');
+            const celebrationOverlay = document.getElementById('celebrationOverlay');
+            const soundToggle = document.getElementById('soundToggle');
+            const difficultySelect = document.getElementById('difficultySelect');
+            const newProblemBtn = document.getElementById('newProblemBtn');
+            const opsTabs = document.getElementById('opsTabs');
+            const problemAreaEl = document.getElementById('problemArea');
+            const bgSymbols = document.getElementById('bgSymbols');
+
+            // ─────────────────────────────────────
+            // STATE
+            // ─────────────────────────────────────
+            let currentOperation = 'add';
+            let difficulty = 'medium';
+            let correctAnswer = 0;
+            let currentAnswers = [];
+            let score = 0;
+            let streak = 0;
+            let bestStreak = 0;
+            let totalStars = 0;
+            let soundEnabled = true;
+            let isAnswering = false;
+            let audioCtx = null;
+
+            // ─────────────────────────────────────
+            // AUDIO ENGINE
+            // ─────────────────────────────────────
+            function getAudioContext() {
+                if (!audioCtx) {
+                    audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                return audioCtx;
+            }
+
+            function playTone(freq, duration, type = 'sine', gainVal = 0.18) {
+                if (!soundEnabled) return;
+                try {
+                    const ctx = getAudioContext();
+                    const t = ctx.currentTime;
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = type;
+                    osc.frequency.setValueAtTime(freq, t);
+                    gain.gain.setValueAtTime(gainVal, t);
+                    gain.gain.exponentialRampToValueAtTime(0.001, t + duration);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(t);
+                    osc.stop(t + duration);
+                } catch (e) {
+                    // silent fail
+                }
+            }
+
+            function playCorrectSound() {
+                playTone(523, 0.15, 'sine', 0.2); // C5
+                setTimeout(() => playTone(659, 0.15, 'sine', 0.2), 100); // E5
+                setTimeout(() => playTone(784, 0.22, 'sine', 0.22), 200); // G5
+            }
+
+            function playWrongSound() {
+                playTone(200, 0.25, 'triangle', 0.12);
+                setTimeout(() => playTone(180, 0.3, 'triangle', 0.1), 150);
+            }
+
+            function playClickSound() {
+                playTone(800, 0.06, 'sine', 0.08);
+            }
+
+            function playCelebrationSound() {
+                const notes = [523, 659, 784, 1047, 784, 1047];
+                notes.forEach((freq, i) => {
+                    setTimeout(() => playTone(freq, 0.18, 'sine', 0.2), i * 90);
+                });
+            }
+
+            function playStarSound() {
+                playTone(1200, 0.1, 'sine', 0.12);
+                setTimeout(() => playTone(1600, 0.12, 'sine', 0.14), 60);
+            }
+
+            // ─────────────────────────────────────
+            // FLOATING BG SYMBOLS
+            // ─────────────────────────────────────
+            function createBgSymbols() {
+                const symbols = ['+', '−', '×', '÷', '=', '★', '♥', '♦', '●', '▲', '■', '∑', 'π', '∞'];
+                bgSymbols.innerHTML = '';
+                for (let i = 0; i < 22; i++) {
+                    const span = document.createElement('span');
+                    span.className = 'bg-symbol';
+                    span.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                    span.style.left = Math.random() * 90 + '%';
+                    span.style.fontSize = (1.2 + Math.random() * 2.8) + 'rem';
+                    span.style.animationDuration = (10 + Math.random() * 20) + 's';
+                    span.style.animationDelay = Math.random() * 18 + 's';
+                    bgSymbols.appendChild(span);
+                }
+            }
+            createBgSymbols();
+
+            // ─────────────────────────────────────
+            // CONFETTI
+            // ─────────────────────────────────────
+            function spawnConfetti(x, y, count = 45) {
+                const colors = [
+                    '#ff7675', '#fd79a8', '#ffd32a', '#00cec9', '#74b9ff',
+                    '#a29bfe', '#ff9ff3', '#feca57', '#54a0ff', '#5f27cd',
+                    '#01a3a4', '#f368e0', '#ff6348', '#7bed9f', '#e056a0'
+                ];
+                const fragment = document.createDocumentFragment();
+                for (let i = 0; i < count; i++) {
+                    const piece = document.createElement('div');
+                    piece.className = 'confetti-piece';
+                    piece.style.left = x + 'px';
+                    piece.style.top = y + 'px';
+                    piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    piece.style.width = (6 + Math.random() * 14) + 'px';
+                    piece.style.height = (6 + Math.random() * 14) + 'px';
+                    piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '3px';
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = 60 + Math.random() * 160;
+                    piece.style.setProperty('--dx', Math.cos(angle) * distance + 'px');
+                    piece.style.setProperty('--dy', Math.sin(angle) * distance - 40 - Math.random() * 100 + 'px');
+                    piece.style.setProperty('--rot', (Math.random() - 0.5) * 900 + 'deg');
+                    piece.style.animationDuration = (0.6 + Math.random() * 0.7) + 's';
+                    fragment.appendChild(piece);
+                }
+                confettiContainer.appendChild(fragment);
+                // Clean up after animation
+                setTimeout(() => {
+                    while (confettiContainer.children.length > 0) {
+                        confettiContainer.removeChild(confettiContainer.firstChild);
+                    }
+                }, 1000);
+            }
+
+            function getProblemCenter() {
+                const rect = problemAreaEl.getBoundingClientRect();
+                return {
+                    x: rect.left + rect.width / 2,
+                    y: rect.top + rect.height / 2
+                };
+            }
+
+            // ─────────────────────────────────────
+            // STAR BURST ON PROBLEM AREA
+            // ─────────────────────────────────────
+            function spawnStarBurst(x, y) {
+                const star = document.createElement('span');
+                star.className = 'star-burst';
+                star.textContent = '⭐';
+                star.style.left = x + 'px';
+                star.style.top = y + 'px';
+                star.style.position = 'fixed';
+                document.body.appendChild(star);
+                setTimeout(() => star.remove(), 750);
+            }
+
+            // ─────────────────────────────────────
+            // CELEBRATION OVERLAY
+            // ─────────────────────────────────────
+            function showCelebration() {
+                celebrationOverlay.style.display = 'flex';
+                celebrationOverlay.innerHTML = `
+                    <div class="celebration-card">
+                        <div class="big-emoji">🎉</div>
+                        <h2>AMAZING!</h2>
+                        <p>You're on a <strong>${streak}</strong> streak!<br>Keep shining bright! 🌟</p>
+                        <p style="font-size:2rem;">${'⭐'.repeat(Math.min(5, Math.floor(streak / 2) + 1))}</p>
+                        <button id="celebrationDismiss">Continue ➡️</button>
+                    </div>
+                `;
+                document.getElementById('celebrationDismiss').addEventListener('click', () => {
+                    celebrationOverlay.style.display = 'none';
+                    celebrationOverlay.innerHTML = '';
+                    generateNewProblem();
+                });
+                playCelebrationSound();
+                const center = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+                spawnConfetti(center.x, center.y, 80);
+            }
+
+            // ─────────────────────────────────────
+            // PROBLEM GENERATION
+            // ─────────────────────────────────────
+            function getRange() {
+                switch (difficulty) {
+                    case 'easy':
+                        return { addSub: [1, 10], mul: [1, 5], divDivisor: [1, 5], divMax: 25 };
+                    case 'medium':
+                        return { addSub: [1, 20], mul: [1, 10], divDivisor: [1, 10], divMax: 100 };
+                    case 'hard':
+                        return { addSub: [1, 50], mul: [1, 12], divDivisor: [1, 12], divMax: 144 };
+                    default:
+                        return { addSub: [1, 20], mul: [1, 10], divDivisor: [1, 10], divMax: 100 };
+                }
+            }
+
+            function randomInt(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+
+            function generateProblem() {
+                const range = getRange();
+                let a, b, answer;
+
+                switch (currentOperation) {
+                    case 'add':
+                        a = randomInt(range.addSub[0], range.addSub[1]);
+                        b = randomInt(range.addSub[0], range.addSub[1]);
+                        answer = a + b;
+                        break;
+                    case 'sub':
+                        a = randomInt(range.addSub[0], range.addSub[1]);
+                        b = randomInt(range.addSub[0], Math.min(a, range.addSub[1]));
+                        answer = a - b;
+                        break;
+                    case 'mul':
+                        a = randomInt(range.mul[0], range.mul[1]);
+                        b = randomInt(range.mul[0], range.mul[1]);
+                        answer = a * b;
+                        break;
+                    case 'div':
+                        b = randomInt(range.divDivisor[0], range.divDivisor[1]);
+                        const maxQuotient = Math.floor(range.divMax / b);
+                        const quot = randomInt(1, Math.max(1, Math.min(maxQuotient, range.divDivisor[1])));
+                        a = b * quot;
+                        answer = quot;
+                        break;
+                    default:
+                        a = randomInt(1, 10);
+                        b = randomInt(1, 10);
+                        answer = a + b;
+                }
+
+                correctAnswer = answer;
+                return { a, b, answer };
+            }
+
+            function generateDistractors(correct, range) {
+                const distractors = new Set();
+                const maxDist = Math.max(3, Math.floor(correct * 0.3));
+                const minVal = Math.max(0, correct - maxDist - 3);
+                const maxVal = correct + maxDist + 3;
+
+                let attempts = 0;
+                while (distractors.size < 3 && attempts < 50) {
+                    const offset = randomInt(-maxDist, maxDist);
+                    const candidate = correct + offset;
+                    if (candidate !== correct && candidate >= minVal && candidate <= maxVal && candidate >= 0) {
+                        distractors.add(candidate);
+                    }
+                    attempts++;
+                }
+                // Fill if needed
+                let fallback = correct + 1;
+                while (distractors.size < 3) {
+                    if (fallback !== correct && !distractors.has(fallback) && fallback >= 0) {
+                        distractors.add(fallback);
+                    }
+                    fallback = fallback > correct ? -(fallback - correct) - 1 : Math.abs(fallback - correct) + 2;
+                    if (Math.abs(fallback) > 100) fallback = correct + distractors.size + 1;
+                }
+                return Array.from(distractors);
+            }
+
+            function shuffleArray(arr) {
+                const shuffled = [...arr];
+                for (let i = shuffled.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                }
+                return shuffled;
+            }
+
+            function generateNewProblem() {
+                isAnswering = false;
+                const { a, b, answer } = generateProblem();
+                correctAnswer = answer;
+                const distractors = generateDistractors(answer, getRange());
+                currentAnswers = shuffleArray([answer, ...distractors]);
+
+                // Update display
+                num1El.textContent = a;
+                num2El.textContent = b;
+
+                const opData = {
+                    'add': { symbol: '+', label: 'ADDITION' },
+                    'sub': { symbol: '−', label: 'SUBTRACTION' },
+                    'mul': { symbol: '×', label: 'MULTIPLICATION' },
+                    'div': { symbol: '÷', label: 'DIVISION' },
+                };
+                opSymbolEl.textContent = opData[currentOperation].symbol;
+                problemLabel.textContent = opData[currentOperation].label;
+
+                // Update answer buttons
+                answerBtns.forEach((btn, i) => {
+                    btn.textContent = currentAnswers[i];
+                    btn.className = 'answer-btn';
+                    btn.disabled = false;
+                });
+
+                // Reset mascot
+                mascotEmoji.textContent = '🦉';
+                mascotEmoji.className = 'mascot thinking';
+                speechBubble.textContent = getRandomThinkingMessage();
+                setTimeout(() => {
+                    mascotEmoji.className = 'mascot';
+                }, 600);
+            }
+
+            function getRandomThinkingMessage() {
+                const messages = [
+                    'Hmm, let me think... 🤔',
+                    'You got this! 🌟',
+                    'What could it be? 💭',
+                    'Take your time! ⏳',
+                    'I believe in you! 💪',
+                    'Math is magic! ✨',
+                    'Think carefully... 🧠',
+                ];
+                return messages[Math.floor(Math.random() * messages.length)];
+            }
+
+            // ─────────────────────────────────────
+            // ANSWER HANDLING
+            // ─────────────────────────────────────
+            function handleAnswer(btnIndex) {
+                if (isAnswering) return;
+                isAnswering = true;
+
+                const selectedAnswer = currentAnswers[btnIndex];
+                const isCorrect = selectedAnswer === correctAnswer;
+                const btn = answerBtns[btnIndex];
+
+                // Disable all buttons temporarily
+                answerBtns.forEach(b => (b.disabled = true));
+
+                if (isCorrect) {
+                    // CORRECT!
+                    btn.classList.add('correct-flash');
+                    score++;
+                    streak++;
+                    if (streak > bestStreak) bestStreak = streak;
+                    totalStars++;
+
+                    // Star burst
+                    const btnRect = btn.getBoundingClientRect();
+                    spawnStarBurst(btnRect.left + btnRect.width / 2, btnRect.top);
+                    spawnConfetti(btnRect.left + btnRect.width / 2, btnRect.top, 35);
+
+                    // Update mascot
+                    mascotEmoji.textContent = '😄';
+                    mascotEmoji.className = 'mascot happy';
+                    const happyMessages = [
+                        'Awesome! 🎉',
+                        'You rock! 🌟',
+                        'Brilliant! ✨',
+                        'Super smart! 🧠',
+                        'Nailed it! 💯',
+                        'Woohoo! 🥳',
+                    ];
+                    speechBubble.textContent = happyMessages[Math.floor(Math.random() * happyMessages.length)];
+
+                    playCorrectSound();
+
+                    // Check for celebration (every 5-streak milestone)
+                    if (streak > 0 && streak % 5 === 0) {
+                        setTimeout(() => {
+                            showCelebration();
+                        }, 700);
+                    } else {
+                        // Generate new problem after delay
+                        setTimeout(() => {
+                            generateNewProblem();
+                        }, 900);
+                    }
+                } else {
+                    // WRONG
+                    btn.classList.add('wrong-shake');
+                    streak = 0;
+
+                    // Highlight correct answer
+                    const correctIndex = currentAnswers.indexOf(correctAnswer);
+                    if (correctIndex >= 0) {
+                        setTimeout(() => {
+                            answerBtns[correctIndex].classList.add('correct-flash');
+                        }, 300);
+                    }
+
+                    // Update mascot
+                    mascotEmoji.textContent = '😊';
+                    mascotEmoji.className = 'mascot encourage';
+                    const encourageMessages = [
+                        'So close! 💪',
+                        'Try again! 🌈',
+                        'Almost there! 🎯',
+                        'Don\'t give up! ⭐',
+                        'You\'ll get it! 🦉',
+                        'Keep going! 🚀',
+                    ];
+                    speechBubble.textContent = encourageMessages[Math.floor(Math.random() *
+                        encourageMessages.length)];
+
+                    playWrongSound();
+
+                    // Generate new problem after delay
+                    setTimeout(() => {
+                        generateNewProblem();
+                    }, 1200);
+                }
+
+                // Update stats
+                updateStats();
+
+                // Reset mascot animation class after delay
+                setTimeout(() => {
+                    if (mascotEmoji.className.includes('happy') || mascotEmoji.className.includes(
+                            'encourage')) {
+                        mascotEmoji.className = 'mascot';
+                    }
+                }, 700);
+            }
+
+            function updateStats() {
+                starCountEl.textContent = totalStars;
+                streakCountEl.textContent = streak;
+                scoreCountEl.textContent = score;
+                // Animate the badges briefly
+                [starCountEl.parentElement, streakCountEl.parentElement, scoreCountEl.parentElement].forEach(
+                    badge => {
+                        badge.style.transform = 'scale(1.08)';
+                        setTimeout(() => { badge.style.transform = 'scale(1)'; }, 200);
+                    });
+            }
+
+            // ─────────────────────────────────────
+            // EVENT LISTENERS
+            // ─────────────────────────────────────
+            answerBtns.forEach((btn, index) => {
+                btn.addEventListener('click', (e) => {
+                    playClickSound();
+                    handleAnswer(index);
+                });
+                // Touch events for mobile responsiveness
+                btn.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    playClickSound();
+                    handleAnswer(index);
+                });
+            });
+
+            // Operation tabs
+            opsTabs.querySelectorAll('.op-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    playClickSound();
+                    opsTabs.querySelectorAll('.op-tab').forEach(t => t.classList.remove(
+                        'active'));
+                    tab.classList.add('active');
+                    currentOperation = tab.dataset.op;
+                    streak = 0;
+                    updateStats();
+                    generateNewProblem();
+                });
+            });
+
+            // Difficulty select
+            difficultySelect.addEventListener('change', () => {
+                playClickSound();
+                difficulty = difficultySelect.value;
+                streak = 0;
+                updateStats();
+                generateNewProblem();
+            });
+
+            // Sound toggle
+            soundToggle.addEventListener('click', () => {
+                soundEnabled = !soundEnabled;
+                soundToggle.textContent = soundEnabled ? '🔊 Sound' : '🔇 Muted';
+                soundToggle.classList.toggle('active-ctrl', !soundEnabled);
+                if (soundEnabled) playClickSound();
+            });
+
+            // New problem button
+            newProblemBtn.addEventListener('click', () => {
+                playClickSound();
+                streak = 0;
+                updateStats();
+                generateNewProblem();
+                // Quick animation on problem area
+                problemAreaEl.style.transform = 'scale(1.03)';
+                setTimeout(() => { problemAreaEl.style.transform = 'scale(1)'; }, 200);
+            });
+
+            // Keyboard support
+            document.addEventListener('keydown', (e) => {
+                if (isAnswering) return;
+                const key = e.key;
+                if (key >= '1' && key <= '4') {
+                    const index = parseInt(key) - 1;
+                    playClickSound();
+                    handleAnswer(index);
+                } else if (key === ' ' || key === 'Enter') {
+                    e.preventDefault();
+                    playClickSound();
+                    streak = 0;
+                    updateStats();
+                    generateNewProblem();
+                }
+            });
+
+            // ─────────────────────────────────────
+            // INIT
+            // ─────────────────────────────────────
+            function init() {
+                generateNewProblem();
+                updateStats();
+                // Initialize audio context on first user interaction
+                document.addEventListener('click', () => {
+                    try { getAudioContext(); } catch (e) {}
+                }, { once: true });
+                document.addEventListener('touchend', () => {
+                    try { getAudioContext(); } catch (e) {}
+                }, { once: true });
+            }
+
+            init();
+
+            console.log('🧮 Math Quest ready! 🎉');
+            console.log('  Operations: Addition, Subtraction, Multiplication, Division');
+            console.log('  Difficulties: Easy, Medium, Hard');
+            console.log('  Features: Animations, Sounds, Confetti, Celebrations, Stars');
+            console.log('  Controls: Click/tap answers, Keyboard 1-4, Space/Enter for new problem');
+            console.log('  Sound toggle available 🔊/🔇');
+        })();
+    </script>
+</body>
+</html>
